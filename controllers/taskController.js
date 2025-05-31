@@ -5,7 +5,9 @@ const { Task } = db; //destructure the Task model
 // Controller function to get all tasks
 exports.getAllTasks = async (req, res) => {
   try {
-    const tasks = await Task.findAll();
+    const tasks = await Task.findAll({
+      where: { userId: req.user.id }, //only get the tasks of the logged in user
+    });
     return res.status(200).json(tasks);
   } catch (error) {
     console.error("Error fetching tasks:", error);
@@ -21,6 +23,8 @@ exports.createTask = async (req, res) => {
     // get the values first from the req
     const { title, description, dueDate } = req.body;
 
+    const userId = req.user.id; // get userId from the authenticated user
+
     // check if title is not null
     if (!title) {
       console.log("Title is required.");
@@ -31,6 +35,7 @@ exports.createTask = async (req, res) => {
       title,
       description,
       dueDate,
+      userId,
     });
 
     // after successfully creating new task inside database
@@ -47,13 +52,19 @@ exports.createTask = async (req, res) => {
 exports.getTaskById = async (req, res) => {
   try {
     // get id first
-    const id = parseInt(req.params.id, 10);
-    if (isNaN(id)) {
+    const taskId = parseInt(req.params.id, 10);
+
+    if (isNaN(taskId)) {
       return res.status(400).json({ error: "Invalid task ID format" });
     }
 
-    // fetch task by id
-    const task = Task.findByPk(id);
+    // fetch task by task id and user id
+    const task = Task.findOne({
+      where: {
+        userId: req.user.id, //Ensures task belongs to the authenticated user
+        id: taskId,
+      },
+    });
 
     if (!task) {
       return res.status(404).json({ error: "Task not found" });
@@ -69,13 +80,18 @@ exports.getTaskById = async (req, res) => {
 exports.updateTask = async (req, res) => {
   try {
     // get id first
-    const id = parseInt(req.params.id, 10);
-    if (isNan(id)) {
+    const taskId = parseInt(req.params.id, 10);
+    if (isNan(taskId)) {
       return res.status(400).json({ error: "Invalid task ID format" });
     }
 
-    // check if task exists and store task
-    const task = await Task.findByPk(id);
+    // check if task exists from authenticated user and store task
+    const task = await Task.findONe({
+      where: {
+        id: taskId,
+        userId: req.user.id,
+      },
+    });
     if (!task) {
       return res.status(404).json({ error: "Task not found" });
     }
@@ -115,13 +131,18 @@ exports.updateTask = async (req, res) => {
 exports.deleteTask = async (req, res) => {
   try {
     // get id first
-    const id = parseInt(req.params.id, 10);
-    if (isNaN(id)) {
+    const taskId = parseInt(req.params.id, 10);
+    if (isNaN(taskId)) {
       return res.status(400).json({ error: "Invalid task ID format" });
     }
 
-    // check if task exist first then get task
-    const task = await Task.findByPk(id);
+    // check if task exist from the authenticated user first then get task
+    const task = await Task.findOne({
+      where: {
+        id: taskId,
+        userId: req.user.id,
+      },
+    });
     if (!task) {
       return res.status(404).json({ error: "Task not found" });
     }

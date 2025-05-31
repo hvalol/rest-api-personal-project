@@ -12,6 +12,10 @@ const createTaskRules = () => {
       .isLength({ min: 1 })
       .withMessage("Title must be at least 1 character long."),
     body("description")
+      .optional({ checkFalsy: true }) // Treat empty strings, null, undefined as optional
+      .isString()
+      .withMessage("Description must be a string."),
+    body("dueDate")
       .optional({ checkFalsy: true }) //treat empty strings, null, undefined as optional
       .isISO8601()
       .withMessage(

@@ -6,20 +6,26 @@ const {
   createTaskValidation,
   updateTaskValidation,
 } = require("../middlewares/validationMiddleware"); // Adjust path as needed
+const { protect } = require("../middlewares/authMiddleware");
+
+// apply the 'protect' middleware to all routes in this file
+// router.use(protect);
+
+// but alternatively, I can put protect to all routes
 
 // GET /tasks - Get all tasks
-router.get("/", taskController.getAllTasks);
+router.get("/", protect, taskController.getAllTasks);
 
 // POST /tasks - Create a new task
-router.post("/", createTaskValidation, taskController.createTask);
+router.post("/", protect, createTaskValidation, taskController.createTask);
 
 // GET /:id - Get single task by ID
-router.get("/:id", taskController.getTaskById);
+router.get("/:id", protect, taskController.getTaskById);
 
 // PUT /:id - Update an existing task
-router.put("/:id", updateTaskValidation, taskController.updateTask);
+router.put("/:id", protect, updateTaskValidation, taskController.updateTask);
 
 // DELETE /:id - Delete an existing task;
-router.delete("/:id", taskController.deleteTask);
+router.delete("/:id", protect, taskController.deleteTask);
 
 module.exports = router;

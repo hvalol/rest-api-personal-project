@@ -9,6 +9,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      // A Task should have a User
+      Task.hasOne(models.User, {
+        foreignKey: "id",
+        as: "user",
+      });
     }
   }
   Task.init(

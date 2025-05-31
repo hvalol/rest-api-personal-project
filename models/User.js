@@ -10,6 +10,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      // User can have many Tasks
+      User.hasMany(models.Task, {
+        foreignKey: "userId",
+        as: "tasks",
+      });
     }
     async validatePassword(password) {
       return await bcrypt.compare(password, this.password);
