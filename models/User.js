@@ -15,6 +15,12 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "userId",
         as: "tasks",
       });
+
+      // A User can have many Categories
+      User.hasMany(models.Category, {
+        foreignKey: "userId",
+        as: "categories",
+      });
     }
     async validatePassword(password) {
       return await bcrypt.compare(password, this.password);

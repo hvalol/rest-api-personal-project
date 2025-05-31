@@ -16,6 +16,9 @@ const { protect } = require("../middlewares/authMiddleware");
 // GET /tasks - Get all tasks
 router.get("/", protect, taskController.getAllTasks);
 
+// GET /tasks/deleted - Get all deleted tasks
+router.get("/deleted", protect, taskController.getAllDeletedTasks);
+
 // POST /tasks - Create a new task
 router.post("/", protect, createTaskValidation, taskController.createTask);
 

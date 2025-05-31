@@ -26,6 +26,14 @@ const createTaskRules = () => {
       .optional()
       .isBoolean()
       .withMessage("Completed must be a boolean (true or false)."),
+    body("categoryIds")
+      .optional()
+      .isArray()
+      .withMessage("categoryIds must be an array."),
+    body("categoryIds.*") // Validates each item in the categoryIds array
+      .if(body("categoryIds").exists()) // Only run if categoryIds array exists
+      .isInt({ min: 1 })
+      .withMessage("Each categoryId must be a positive integer."),
   ];
 };
 
@@ -54,6 +62,14 @@ const updateTaskRules = () => {
       .optional()
       .isBoolean()
       .withMessage("Completed must be a boolean if provided."),
+    body("categoryIds")
+      .optional()
+      .isArray()
+      .withMessage("categoryIds must be an array."),
+    body("categoryIds.*") // Validates each item in the categoryIds array
+      .if(body("categoryIds").exists()) // Only run if categoryIds array exists
+      .isInt({ min: 1 })
+      .withMessage("Each categoryId must be a positive integer."),
     // Ensure at least one field is present for an update.
     // This is a bit trickier with express-validator directly in the chain.
     // Often handled by checking req.body in the controller or a custom validator.
@@ -97,6 +113,19 @@ const loginRules = () => {
   ];
 };
 
+// Validation rules for category
+const categoryRules = () => {
+  return [
+    body("name")
+      .trim()
+      .notEmpty()
+      .withMessage("Category name cannot be empty.")
+      .isString()
+      .withMessage("Category name must be a string.")
+      .isLength({ min: 1, max: 50 })
+      .withMessage("Category name must be between 1 and 50 characters long."),
+  ];
+};
 // Middleware to check validaton results
 const validate = (req, res, next) => {
   const errors = validationResult(req);
@@ -118,4 +147,5 @@ module.exports = {
   updateTaskValidation: [updateTaskRules(), validate],
   registerValidation: [registerRules(), validate],
   loginValidation: [loginRules(), validate],
+  categoryValidation: [categoryRules(), validate],
 };
