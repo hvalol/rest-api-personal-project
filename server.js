@@ -2,9 +2,12 @@
 const express = require("express");
 const bodyParser = require("body-parser"); //or use express.json() and express.urlencoded()
 const cors = require("cors");
+require("dotenv").config();
 
 // import routes
 const taskRoutes = require("./routes/tasks");
+const authRoutes = require("./routes/authRoutes");
+
 // create express app
 const app = express();
 
@@ -29,6 +32,7 @@ app.get("/", (req, res) => {
 // routes
 // task route
 app.use("/api/tasks", taskRoutes);
+app.use("/api/auth", authRoutes);
 // ----- start server ---------
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);

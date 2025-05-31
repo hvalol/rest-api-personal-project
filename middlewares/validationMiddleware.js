@@ -71,6 +71,28 @@ const updateTaskRules = () => {
   ];
 };
 
+// Validation rules for registering user
+const registerRules = () => {
+  return [
+    body("email")
+      .isEmail()
+      .withMessage("Please provide a valid email address."),
+    body("password")
+      .isLength({ min: 8 })
+      .withMessage("Password must be at least 8 characters long."),
+  ];
+};
+
+// Validation rules for user login
+const loginRules = () => {
+  return [
+    body("email")
+      .isEmail()
+      .withMessage("Please provide a valid email address."),
+    body("password").notEmpty().withMessage("Password cannot be empty."),
+  ];
+};
+
 // Middleware to check validaton results
 const validate = (req, res, next) => {
   const errors = validationResult(req);
@@ -90,4 +112,6 @@ const validate = (req, res, next) => {
 module.exports = {
   createTaskValidation: [createTaskRules(), validate],
   updateTaskValidation: [updateTaskRules(), validate],
+  registerValidation: [registerRules(), validate],
+  loginValidation: [loginRules(), validate],
 };
