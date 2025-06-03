@@ -8,7 +8,7 @@ require("dotenv").config();
 const taskRoutes = require("./routes/tasks");
 const authRoutes = require("./routes/auth");
 const categoryRoutes = require("./routes/category");
-
+const publicApiRoutes = require("./routes/publicApi");
 // create express app
 const app = express();
 
@@ -35,6 +35,7 @@ app.get("/", (req, res) => {
 app.use("/api/tasks", taskRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/categories", categoryRoutes);
+app.use("/api/public", publicApiRoutes);
 // ----- start server ---------
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
