@@ -15,7 +15,7 @@ module.exports = {
 
     // Fetch the users we created in the previous seeder
     const users = await queryInterface.sequelize.query(
-      `SELECT id, email FROM Users WHERE email IN ('testuser1@example.com', 'testuser2@example.com', 'testuser3@example.com', 'testuser4@example.com', 'testuser5@example.com');`,
+      `SELECT id, email FROM "Users" WHERE email IN ('testuser1@example.com', 'testuser2@example.com', 'testuser3@example.com', 'testuser4@example.com', 'testuser5@example.com');`,
       { type: queryInterface.sequelize.QueryTypes.SELECT }
     );
 

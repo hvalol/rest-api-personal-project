@@ -7,7 +7,7 @@ module.exports = {
 
     // --- Fetch Users ---
     const users = await queryInterface.sequelize.query(
-      `SELECT id, email FROM Users WHERE email IN ('testuser1@example.com', 'testuser2@example.com', 'testuser3@example.com', 'testuser4@example.com', 'testuser5@example.com');`,
+      `SELECT id, email FROM "Users" WHERE email IN ('testuser1@example.com', 'testuser2@example.com', 'testuser3@example.com', 'testuser4@example.com', 'testuser5@example.com');`,
       { type: queryInterface.sequelize.QueryTypes.SELECT }
     );
 
@@ -95,7 +95,7 @@ module.exports = {
 
     // --- Fetch newly inserted Tasks and Categories to get their IDs for join table ---
     const insertedTasks = await queryInterface.sequelize.query(
-      `SELECT id, title, userId FROM Tasks WHERE createdAt >= '${now
+      `SELECT id, title, "userId" FROM "Tasks" WHERE "createdAt" >= '${now
         .toISOString()
         .slice(0, 19)
         .replace("T", " ")}';`, // Filter by creation time to get only newly inserted tasks
@@ -103,7 +103,7 @@ module.exports = {
     );
 
     const allCategories = await queryInterface.sequelize.query(
-      `SELECT id, name, userId FROM Categories;`,
+      `SELECT id, name, "userId" FROM "Categories";`,
       { type: queryInterface.sequelize.QueryTypes.SELECT }
     );
 
