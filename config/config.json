@@ -1,11 +1,25 @@
 {
   "development": {
-    "use_env_variable": "DEV_DATABASE_URL",
-    "dialect": "postgres"
+    "use_env_variable": "DATABASE_URL",
+    "dialect": "postgres",
+    "schema": "dev_schema",
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    }
   },
   "staging": {
-    "use_env_variable": "STAGING_DATABASE_URL",
-    "dialect": "postgres"
+    "use_env_variable": "DATABASE_URL",
+    "dialect": "postgres",
+    "schema": "staging_schema",
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    }
   },
   "production": {
     "use_env_variable": "DATABASE_URL",
