@@ -16,7 +16,7 @@ env:
 
 jobs:
   general-script:
-    name: Run Lint and Test
+    name: Run Test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
