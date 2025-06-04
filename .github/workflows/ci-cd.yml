@@ -1,0 +1,33 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - develop
+      - staging
+      - main
+  pull_request:
+    branches:
+      - staging
+      - main
+
+env:
+  NODE_VERSION: "18"
+
+jobs:
+  general-script:
+    name: Run Lint and Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+      - name: Install Dependencies
+        run: npm ci
+      - name: Run Lint
+        run: npm run lint
+      - name: Run Tests
+        run: npm test
