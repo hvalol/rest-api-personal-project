@@ -11,11 +11,6 @@ on:
       - staging
       - main
 
-env:
-  NODE_VERSION: "18"
-  REGISTRY: docker.io # Change this to your container registry (e.g., Docker Hub or GitHub Container Registry)
-  IMAGE_NAME: ${{ github.repository }}
-
 jobs:
   build-and-script:
     runs-on: ubuntu-latest
